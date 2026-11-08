@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Abood Food Store</title>
+<meta name="description" content="اطلب شاورما سوري وبرجر ووجبات من Abood Food Store مباشرة على واتساب — بدون عمولة">
+<meta name="theme-color" content="#16120f">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="images/icons/icon-192.png">
+<link rel="apple-touch-icon" href="images/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/menu.js" defer></script>
+<script src="js/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#menu" data-t="skip">تخطي إلى المنيو</a>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-top">
+      <button id="installBtn" class="chip-btn" type="button" data-t="install" hidden></button>
+      <button id="langBtn" class="chip-btn" type="button">EN</button>
+    </div>
+    <div class="brand">
+      <div class="logo"><span id="logoFallback" aria-hidden="true">A</span><img id="logo" src="images/logo.png" alt="" width="72" height="72"></div>
+      <div>
+        <h1 id="storeName">Abood Food Store</h1>
+        <p id="tagline"></p>
+      </div>
+    </div>
+    <div class="info" id="info"></div>
+  </div>
+</header>
+
+<div class="container"><p id="closedBar" class="closed-bar" role="status" hidden></p></div>
+
+<section id="offers" class="offers container" aria-roledescription="carousel" data-ta="offersLabel">
+  <div class="track" id="offTrack"></div>
+  <button class="nav prev" id="offPrev" type="button" data-ta="prev">‹</button>
+  <button class="nav next" id="offNext" type="button" data-ta="next">›</button>
+  <div class="dots" id="offDots"></div>
+</section>
+
+<div class="toolbar">
+  <div class="container">
+    <label class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" enterkeyhint="search" autocomplete="off" maxlength="40" data-tp="search" data-ta="search">
+    </label>
+    <nav class="tabs" id="tabs" data-ta="categories"></nav>
+  </div>
+</div>
+
+<main id="menu" class="container">
+  <section id="bestSec" class="best">
+    <h2 class="sec"><span aria-hidden="true">🔥</span> <span data-t="best"></span></h2>
+    <div class="hscroll" id="bestList"></div>
+  </section>
+  <div id="sections"></div>
+  <p id="noResults" class="empty" data-t="noResults" hidden></p>
+</main>
+
+<footer class="foot container">
+  <p class="foot-name" id="footName"></p>
+  <p data-t="footNote"></p>
+  <p><a id="callLink" href="#" data-t="call"></a></p>
+  <p class="credit" id="credit"></p>
+</footer>
+
+<button id="cartBar" class="cart-bar" type="button" hidden>
+  <span class="cb-count" id="cbCount">0</span>
+  <span class="grow" data-t="viewCart"></span>
+  <span id="cbTotal"></span>
+</button>
+
+<dialog id="itemDlg" class="sheet"></dialog>
+<dialog id="cartDlg" class="sheet"></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<noscript><p class="empty">من فضلك فعّل JavaScript عشان تقدر تطلب.</p></noscript>
+</body>
+</html>
