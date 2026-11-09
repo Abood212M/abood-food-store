@@ -1,5 +1,5 @@
 /* لو غيّرت صور كتير ومش ظاهرة عند الناس: غيّر v1 لـ v2 */
-const VERSION = 'afs-20261109020907';
+const VERSION = 'afs-20261109021357';
 const SHELL = ['./', 'index.html', 'css/style.css', 'js/menu.js', 'js/app.js', 'manifest.webmanifest'];
 
 self.addEventListener('install', e => {
