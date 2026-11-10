@@ -39,7 +39,7 @@ window.STORE = {
     { code: "WELCOME50", type: "fixed", value: 50, min: 400 }
   ],
 
-  // العروض — الصورة رقم 1 للعرض الأول في images/offers/1.jpg وهكذا. item = رقم الصنف اللي يفتح لما يدوس
+  // العروض — الصورة رقم 1 للعرض الأول في images/offers/1.webp وهكذا. item = رقم الصنف اللي يفتح لما يدوس
   offers: [
     { emoji: "🍱", item: 14, tag: { ar: "عرض العيلة", en: "Family deal" }, title: { ar: "بوكس العيلة بـ 799 بدل 950", en: "Family Box: 799 instead of 950" }, sub: { ar: "4 عربي فراخ + بطاطس عائلي + ثومية + لتر بيبسي", en: "4 chicken arabi + family fries + garlic + 1L Pepsi" } },
     { emoji: "🍔", item: 20, tag: { ar: "جديد", en: "New" }, title: { ar: "أبود سبيشال بـ 290 بدل 330", en: "Abood Special: 290 instead of 330" }, sub: { ar: "3 طبقات لحم وصوص الشيف السري", en: "Triple beef with the chef's secret sauce" } },
