@@ -93,7 +93,7 @@ window.STORE = {
      price: السعر   old: السعر قبل الخصم (اختياري)   sizes/add: الأحجام والإضافات (اختياري)
      best: true = يظهر في الأكثر طلباً   off: true = غير متاح مؤقتاً */
   items: [
-    { id: 1, cat: "shawarma", ar: "شاورما فراخ سوري", en: "Syrian Chicken Shawarma", dar: "عيش صاج، ثومية، مخلل وبطاطس", den: "Saj bread, garlic sauce, pickles & fries", price: 100, sizes: "sh", add: "sh", best: true },
+    { id: 1, cat: "shawarma", ar: "شاورما فراخ سوري", en: "Syrian Chicken Shawarma", dar: "عيش صاج، ثومية، مخلل وبطاطس", den: "Saj bread, garlic sauce, pickles & fries", price: 95, sizes: "sh", add: "sh", best: true },
     { id: 2, cat: "shawarma", ar: "شاورما لحمة سوري", en: "Syrian Beef Shawarma", dar: "لحمة متبلة، طحينة، بقدونس وبصل", den: "Marinated beef, tahini, parsley & onion", price: 140, sizes: "sh", add: "sh", best: true },
     { id: 3, cat: "shawarma", ar: "شاورما فراخ دبل تشيز", en: "Double Cheese Chicken Shawarma", dar: "فراخ مع موتزاريلا وشيدر سايحة", den: "Chicken with melted mozzarella & cheddar", price: 125, sizes: "sh", add: "sh" },
     { id: 4, cat: "shawarma", ar: "شاورما ميكس", en: "Mixed Shawarma", dar: "فراخ ولحمة مع ثومية وطحينة", den: "Chicken & beef with garlic & tahini", price: 150, sizes: "sh", add: "sh" },
