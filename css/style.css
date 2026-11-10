@@ -191,3 +191,15 @@ dialog::backdrop{background:rgba(15,12,10,.55);-webkit-backdrop-filter:blur(3px)
 .offers:hover .nav,.offers:focus-within .nav{opacity:1;pointer-events:auto}
 @media (hover:none){.nav{display:none!important}}
 @media (hover:hover){.slide-txt{padding-inline:72px 22px}}
+/* إصلاح لون الخط الأبيض في البانر العلوي */
+.hero,
+.hero h1,
+.hero .brand-text h1,
+.hero .pill,
+.hero .badge {
+  color: #ffffff !important;
+}
+.hero p,
+.hero .subtitle {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
