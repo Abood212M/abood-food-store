@@ -1,5 +1,5 @@
 /* لو غيّرت صور كتير ومش ظاهرة عند الناس: غيّر v1 لـ v2 */
-const VERSION = 'afs-20261110135431';
+const VERSION = 'afs-20261110135455';
 const SHELL = ['./', 'index.html', 'css/style.css', 'js/menu.js', 'js/app.js', 'manifest.webmanifest'];
 
 self.addEventListener('install', e => {
@@ -17,7 +17,7 @@ self.addEventListener('fetch', e => {
     e.respondWith(caches.open(VERSION).then(async c => {
       const hit = await c.match(req);
       const net = fetch(req).then(res => { if (res.ok) c.put(req, res.clone()); return res; }).catch(() => hit || Response.error());
-      return hit || net;
+      return net;
     }));
     return;
   }
