@@ -18,7 +18,9 @@ window.STORE = {
   branches: [
     {
       id: "main", ar: "الفرع الرئيسي", en: "Main branch",
-      whatsapp: "201555974185",   // 20 + الرقم من غير أول صفر
+      whatsapp: "201555974185",
+    instapay: "01555974185",
+    vodafoneCash: "01013264185",   // 20 + الرقم من غير أول صفر
       zones: [
         { ar: "استلام من المطعم", en: "Pickup from store", fee: 0, pickup: true },
         { ar: "منطقة 1 — قريب جداً (حتى 2 كم)", en: "Zone 1 — up to 2 km", fee: 20 },

@@ -551,3 +551,89 @@
   renderAll();
   setInterval(() => { renderHeader(); if (R && R.sendBtn.isConnected) R.sendBtn.disabled = !isOpen(); }, 60000);
 })();
+
+// ====== UPGRADED PAYMENT & LUXURY WHATSAPP INVOICE ENGINE ======
+(function() {
+  function injectPaymentUI() {
+    const noteEl = document.getElementById('custNote') || document.getElementById('custAddress');
+    if (!noteEl || document.getElementById('payMethodsBox')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'payMethodsBox';
+    wrap.innerHTML = `
+      <label class="field-label" style="display:block;font-weight:800;margin:10px 0 4px;font-size:13px;">طريقة الدفع</label>
+      <div class="pay-methods">
+        <div class="pay-opt active" data-pay="cash">💵 كاش عند الاستلام</div>
+        <div class="pay-opt" data-pay="instapay">⚡ InstaPay</div>
+        <div class="pay-opt" data-pay="vf_cash">📱 فودافون كاش</div>
+      </div>
+      <div id="payTransferInfo" class="pay-info-box"></div>
+    `;
+    noteEl.parentNode.insertBefore(wrap, noteEl.nextSibling);
+
+    window.selectedPayMethod = 'cash';
+    const opts = wrap.querySelectorAll('.pay-opt');
+    const infoBox = document.getElementById('payTransferInfo');
+    const rest = (window.MENU_DATA && window.MENU_DATA.restaurant) || {};
+
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        opts.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        window.selectedPayMethod = btn.dataset.pay;
+        if (window.selectedPayMethod === 'instapay') {
+          const num = rest.instapay || '01555974185';
+          infoBox.className = 'pay-info-box show';
+          infoBox.innerHTML = `⚡ <strong>تحويل InstaPay على رقم:</strong> <span dir="ltr" style="font-weight:900;font-size:14px;">${num}</span>
+            <button type="button" class="copy-num-btn" onclick="navigator.clipboard.writeText('${num}');this.innerText='تم النسخ ✔️'">نسخ الرقم</button>
+            <div style="margin-top:5px;color:#9a3412;font-weight:700;">📸 بعد الضغط على إرسال الطلب، أرفق لقطة شاشة (Screenshot) للتحويل في محادثة الواتساب لتأكيد طلبك فوراً.</div>`;
+        } else if (window.selectedPayMethod === 'vf_cash') {
+          const num = rest.vodafoneCash || '01013264185';
+          infoBox.className = 'pay-info-box show';
+          infoBox.innerHTML = `📱 <strong>تحويل محفظة فودافون كاش:</strong> <span dir="ltr" style="font-weight:900;font-size:14px;">${num}</span>
+            <button type="button" class="copy-num-btn" onclick="navigator.clipboard.writeText('${num}');this.innerText='تم النسخ ✔️'">نسخ الرقم</button>
+            <div style="margin-top:5px;color:#9a3412;font-weight:700;">📸 بعد الضغط على إرسال الطلب، أرفق صورة إيصال التحويل في محادثة الواتساب لتأكيد طلبك فوراً.</div>`;
+        } else {
+          infoBox.className = 'pay-info-box';
+          infoBox.innerHTML = '';
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', injectPaymentUI);
+  setTimeout(injectPaymentUI, 600);
+
+  // اعتراض وتحسين رسالة الفاتورة المرسلة إلى واتساب لتصبح برقم تسلسلي واضح وشكل فخم
+  const origOpen = window.open;
+  window.open = function(url, target, features) {
+    try {
+      if (typeof url === 'string' && url.includes('wa.me/')) {
+        const parts = url.split('?text=');
+        if (parts.length === 2) {
+          let decoded = decodeURIComponent(parts[1]);
+          const now = new Date();
+          // توليد رقم فاتورة تسلسلي واضح ومميز من اليوم والساعة والدقيقة (مثال: #AF-110482)
+          const seqNum = String(now.getDate()).padStart(2,'0') + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0') + String(now.getSeconds()).slice(-1);
+          const dateStr = now.toLocaleDateString('ar-EG') + ' - ' + now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+          
+          let payLabel = '💵 نقدي عند الاستلام (Cash)';
+          if (window.selectedPayMethod === 'instapay') payLabel = '⚡ تحويل InstaPay (مرفق صورة التحويل 📸)';
+          if (window.selectedPayMethod === 'vf_cash') payLabel = '📱 فودافون كاش (مرفق صورة التحويل 📸)';
+
+          const header = `🧾 *فاتورة طلب رسمية | رقم: #${seqNum}*
+📅 *التاريخ:* ${dateStr}
+💳 *طريقة الدفع:* ${payLabel}
+━━━━━━━━━━━━━━━━━━━━
+`;
+          const footer = `
+━━━━━━━━━━━━━━━━━━━━
+${window.selectedPayMethod !== 'cash' ? '⚠️ *تنبيه للعميل:* يرجى إرفاق صورة التحويل (Screenshot) تحت هذه الرسالة الآن لتأكيد الطلب فوراً 📸' : '✅ *يرجى الرد لتأكيد استلام الطلب وبدء التحضير*'}`;
+          
+          decoded = header + decoded + footer;
+          url = parts[0] + '?text=' + encodeURIComponent(decoded);
+        }
+      }
+    } catch(e) {}
+    return origOpen.call(window, url, target, features);
+  };
+})();
