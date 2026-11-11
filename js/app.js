@@ -1,7 +1,6 @@
 /* =====================================================================
-   Abood Food Store — منطق الموقع
+   Abood Food Store — منطق الموقع (النسخة الماستر المدمجة)
    ⚠️ متعدّلش هنا. كل البيانات في js/menu.js
-   Security: no innerHTML anywhere (XSS-safe), inputs sanitized, CSP-compatible (no inline JS/CSS)
    ===================================================================== */
 (() => {
   'use strict';
@@ -19,15 +18,16 @@
       viewCart: 'عرض الطلب', cart: 'طلبك', empty: 'السلة فاضية… اختار أكلتك 😋', subtotal: 'المجموع', discount: 'الخصم',
       delivery: 'التوصيل', free: 'مجاني', total: 'الإجمالي', name: 'الاسم', phone: 'رقم الموبايل',
       address: 'العنوان بالتفصيل', addressPh: 'الشارع، رقم العمارة، الدور، علامة مميزة', note: 'ملاحظات (اختياري)', notePh: 'مثلاً: من غير بصل',
-      zone: 'المنطقة / طريقة الاستلام', chooseZone: 'اختار…', branch: 'الفرع', coupon: 'كود خصم', apply: 'تطبيق',
+      zone: 'منطقة التوصيل', chooseZone: 'اختار المنطقة…', branch: 'الفرع', coupon: 'كود خصم', apply: 'تطبيق',
       send: 'إرسال الطلب على واتساب', openNow: 'مفتوح الآن', closedNow: 'مقفول الآن',
       closedMsg: 'المطعم مقفول دلوقتي — تقدر تتفرج على المنيو، والطلب بيفتح الساعة', install: '📲 ثبّت التطبيق',
       iosInstall: 'على الآيفون: دوس زرار المشاركة ⬆️ ثم «إضافة إلى الشاشة الرئيسية»',
       noResults: 'مفيش نتائج… جرّب كلمة تانية', unavailable: 'غير متاح حالياً', extras: 'إضافات', upTo: 'لحد', size: 'الحجم',
-      added: 'اتضاف للسلة ✓', maxAddons: 'وصلت للحد الأقصى من الإضافات', errName: 'اكتب اسمك',
-      errPhone: 'اكتب رقم موبايل مصري صحيح (11 رقم يبدأ بـ 01)', errAddr: 'اكتب العنوان بالتفصيل', errZone: 'اختار المنطقة أو الاستلام من المطعم',
+      added: 'اتضاف للسلة ✓', maxAddons: 'وصلت للحد الأقصى من الإضافات', errName: 'اكتب اسمك الثلاثي أو الثنائي',
+      errPhone: 'اكتب رقم موبايل مصري صحيح (11 رقم يبدأ بـ 01)', errAddr: 'اكتب العنوان بالتفصيل', errZone: 'اختار منطقة التوصيل أولاً',
+      errRef: 'اكتب آخر 4 أرقام من الرقم المرجعي للتحويل أو الرقم المحول منه لتأكيد الدفع',
       couponOk: 'تم تطبيق الكود ✓', couponBad: 'الكود غير صحيح', couponMin: 'الكود ده للطلبات فوق', freeOver: 'توصيل مجاني فوق',
-      deliveryFrom: 'التوصيل من', payCash: 'الدفع كاش عند الاستلام', clear: 'تفريغ السلة', clearQ: 'تفريغ السلة بالكامل؟',
+      deliveryFrom: 'التوصيل من', payMethod: 'طريقة الدفع', payCash: 'كاش عند الاستلام', clear: 'تفريغ السلة', clearQ: 'تفريغ السلة بالكامل؟',
       close: 'إغلاق', prev: 'العرض السابق', next: 'العرض التالي', offersLabel: 'العروض', categories: 'أقسام المنيو', orderNow: 'اطلب دلوقتي ←',
       am: 'ص', pm: 'م', confirmNote: 'المطعم هيأكد معاك الطلب والسعر النهائي على واتساب.', increase: 'زيادة', decrease: 'تقليل',
       langBtn: 'EN', footNote: 'اطلب مباشرة من المطعم — بدون عمولات ولا رسوم خدمة', call: '📞 اتصل بالمطعم'
@@ -37,15 +37,16 @@
       viewCart: 'View order', cart: 'Your order', empty: 'Your cart is empty… pick something tasty 😋', subtotal: 'Subtotal', discount: 'Discount',
       delivery: 'Delivery', free: 'Free', total: 'Total', name: 'Name', phone: 'Mobile number',
       address: 'Detailed address', addressPh: 'Street, building no., floor, landmark', note: 'Notes (optional)', notePh: 'e.g. no onions',
-      zone: 'Area / pickup', chooseZone: 'Choose…', branch: 'Branch', coupon: 'Promo code', apply: 'Apply',
+      zone: 'Delivery Area', chooseZone: 'Choose area…', branch: 'Branch', coupon: 'Promo code', apply: 'Apply',
       send: 'Send order on WhatsApp', openNow: 'Open now', closedNow: 'Closed now',
       closedMsg: 'We are closed now — browse the menu; ordering opens at', install: '📲 Install app',
       iosInstall: 'On iPhone: tap Share ⬆️ then “Add to Home Screen”',
       noResults: 'No results… try another word', unavailable: 'Unavailable', extras: 'Extras', upTo: 'up to', size: 'Size',
       added: 'Added to cart ✓', maxAddons: 'Maximum extras reached', errName: 'Please enter your name',
-      errPhone: 'Enter a valid Egyptian mobile (11 digits starting with 01)', errAddr: 'Please enter your detailed address', errZone: 'Choose your area or pickup',
+      errPhone: 'Enter a valid Egyptian mobile (11 digits starting with 01)', errAddr: 'Please enter your detailed address', errZone: 'Choose your delivery area',
+      errRef: 'Please enter the last 4 digits of transfer reference or sender number',
       couponOk: 'Code applied ✓', couponBad: 'Invalid code', couponMin: 'This code is for orders above', freeOver: 'Free delivery over',
-      deliveryFrom: 'Delivery from', payCash: 'Cash on delivery', clear: 'Clear cart', clearQ: 'Clear the whole cart?',
+      deliveryFrom: 'Delivery from', payMethod: 'Payment Method', payCash: 'Cash on delivery', clear: 'Clear cart', clearQ: 'Clear the whole cart?',
       close: 'Close', prev: 'Previous offer', next: 'Next offer', offersLabel: 'Offers', categories: 'Menu categories', orderNow: 'Order now →',
       am: 'AM', pm: 'PM', confirmNote: 'The restaurant will confirm your order and final price on WhatsApp.', increase: 'Increase', decrease: 'Decrease',
       langBtn: 'عربي', footNote: 'Order directly from the restaurant — no commissions, no service fees', call: '📞 Call the restaurant'
@@ -71,10 +72,10 @@
     }
     return el;
   }
-   const put = (el, ...kids) => el.replaceChildren(...kids.flat(Infinity).filter(k => k !== null && k !== undefined && k !== false));
+  const put = (el, ...kids) => el.replaceChildren(...kids.flat(Infinity).filter(k => k !== null && k !== undefined && k !== false));
   const mem = {
     get(k, d) { try { const v = localStorage.getItem('afs:' + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
-    set(k, v) { try { localStorage.setItem('afs:' + k, JSON.stringify(v)); } catch { /* private mode */ } }
+    set(k, v) { try { localStorage.setItem('afs:' + k, JSON.stringify(v)); } catch {} }
   };
   let lang = mem.get('lang', 'ar') === 'en' ? 'en' : 'ar';
   const t = k => (T[lang] && T[lang][k]) || T.ar[k] || k;
@@ -89,11 +90,7 @@
 
   /* ---------- البيانات ---------- */
   const ITEMS = new Map();
-  for (const it of S.items) {
-    if (ITEMS.has(it.id)) console.warn('⚠️ رقم صنف مكرر:', it.id);
-    if (!(Number.isFinite(it.price) && it.price >= 0)) console.warn('⚠️ سعر غلط في الصنف:', it.id);
-    ITEMS.set(it.id, it);
-  }
+  for (const it of S.items) ITEMS.set(it.id, it);
   const CAT = new Map(S.categories.map(c => [c.id, c]));
   const IDX = new Map(S.items.map(it => { const c = CAT.get(it.cat) || {}; return [it.id, norm([it.ar, it.en, it.dar, it.den, c.ar, c.en].join(' '))]; }));
   const sizeSet = it => (it && it.sizes && S.sizeSets && S.sizeSets[it.sizes]) || null;
@@ -127,8 +124,11 @@
   const branches = Array.isArray(S.branches) ? S.branches : [];
   let bIdx = parseInt(mem.get('branch', 0), 10); if (!(bIdx >= 0 && bIdx < branches.length)) bIdx = 0;
   const branch = () => branches[bIdx];
-  let zIdx = parseInt(mem.get('zone', -1), 10); if (!(branch() && branch().zones && branch().zones[zIdx])) zIdx = -1;
+  const getDeliveryZones = () => ((branch() && branch().zones) || []).filter(z => !z.pickup);
+  let zIdx = parseInt(mem.get('zone', -1), 10); if (!getDeliveryZones()[zIdx]) zIdx = -1;
   let coupon = null;
+  let payMethod = 'cash'; // 'cash' | 'instapay' | 'vf_cash'
+
   const keyOf = l => `${l.id}|${l.s}|${l.a.join(',')}`;
   const lineTotal = l => unitPrice(ITEMS.get(l.id), l.s, l.a) * l.q;
   function loadCart() {
@@ -148,6 +148,7 @@
   let cart = loadCart();
   const cr = mem.get('cust', {}) || {};
   const cust = { name: clean(cr.name, 40), phone: clean(cr.phone, 20), addr: clean(cr.addr, 200) };
+
   function totals() {
     const sub = cart.reduce((s, l) => s + lineTotal(l), 0);
     const c = coupon ? (S.coupons || []).find(x => x.code === coupon) : null;
@@ -159,10 +160,11 @@
         disc = Math.min(disc, sub);
       } else short = c.min;
     }
-    const z = branch() && branch().zones ? branch().zones[zIdx] : null;
+    const zones = getDeliveryZones();
+    const z = zones[zIdx] || null;
     const after = sub - disc;
     let fee = 0;
-    if (z && !z.pickup) fee = (S.freeDeliveryOver && after >= S.freeDeliveryOver) ? 0 : (z.fee || 0);
+    if (z) fee = (S.freeDeliveryOver && after >= S.freeDeliveryOver) ? 0 : (z.fee || 0);
     return { sub, disc, fee, total: after + fee, zone: z, short, c };
   }
 
@@ -187,7 +189,7 @@
     img.src = sources[0];
     return img;
   }
-  const itemSrc = id => { const f = encodeURIComponent(String(id)); return [`images/items/${f}.jpg`, `images/items/${f}.webp`]; };
+  const itemSrc = id => { const f = encodeURIComponent(String(id)); return [`images/items/${f}.webp`, `images/items/${f}.jpg`]; };
   function media(it, cls, eager) {
     const c = CAT.get(it.cat);
     return h('div', { class: 'media' + (cls ? ' ' + cls : '') }, h('span', { class: 'ph', 'aria-hidden': 'true', text: (c && c.icon) || '🍽️' }), picture(itemSrc(it.id), nm(it), eager));
@@ -203,7 +205,7 @@
     $('#storeName').textContent = S.name; logo.alt = S.name;
     $('#tagline').textContent = L(S.tagline);
     const open = isOpen();
-    const zones = ((branch() && branch().zones) || []).filter(z => !z.pickup);
+    const zones = getDeliveryZones();
     const minFee = zones.length ? Math.min(...zones.map(z => z.fee || 0)) : 0;
     put($('#info'),
       h('span', { class: 'pill' + (open ? '' : ' closed') }, h('span', { class: 'led' }), open ? t('openNow') : t('closedNow')),
@@ -234,7 +236,7 @@
     $('#offPrev').hidden = $('#offNext').hidden = offers.length < 2;
     track.replaceChildren(...offers.map((o, i) => {
       const slide = h('div', { class: 'slide' + (o.item ? ' clickable' : ''), dir: lang === 'ar' ? 'rtl' : 'ltr', role: 'group', 'aria-roledescription': 'slide', 'aria-label': `${i + 1} / ${offers.length}`, tabindex: o.item ? '0' : null },
-        picture([`images/offers/${i + 1}.jpg`, `images/offers/${i + 1}.webp`], '', i === 0),
+        picture([`images/offers/${i + 1}.webp`, `images/offers/${i + 1}.jpg`], '', i === 0),
         h('span', { class: 'slide-emoji', 'aria-hidden': 'true', text: o.emoji || '🔥' }),
         h('div', { class: 'slide-txt' },
           o.tag ? h('span', { class: 'slide-tag', text: L(o.tag) }) : null,
@@ -387,7 +389,7 @@
   }
   $('#cartBar').addEventListener('click', () => { buildCart(); showDlg($('#cartDlg')); });
 
-  let R = null;   // refs to cart form elements
+  let R = null;
   const field = (label, input) => h('label', { class: 'field' }, h('span', { text: label }), input);
   function buildCart() {
     const dlg = $('#cartDlg');
@@ -401,16 +403,69 @@
     }
     const lines = h('div', { class: 'lines' });
     const sum = h('div', { class: 'summary', 'aria-live': 'polite' });
-    const zoneSel = h('select', { onchange: e => { zIdx = parseInt(e.target.value, 10); mem.set('zone', zIdx); e.target.removeAttribute('aria-invalid'); toggleAddr(); renderSummary(); } });
-    const branchSel = branches.length > 1 ? h('select', { onchange: e => { bIdx = parseInt(e.target.value, 10) || 0; mem.set('branch', bIdx); zIdx = -1; mem.set('zone', -1); fillZones(); toggleAddr(); renderSummary(); renderHeader(); } },
+    const zoneSel = h('select', { onchange: e => { zIdx = parseInt(e.target.value, 10); mem.set('zone', zIdx); e.target.removeAttribute('aria-invalid'); renderSummary(); } });
+    const branchSel = branches.length > 1 ? h('select', { onchange: e => { bIdx = parseInt(e.target.value, 10) || 0; mem.set('branch', bIdx); zIdx = -1; mem.set('zone', -1); fillZones(); renderSummary(); renderHeader(); } },
       branches.map((b, i) => h('option', { value: String(i), selected: i === bIdx, text: L(b) }))) : null;
     const fName = h('input', { type: 'text', autocomplete: 'name', maxlength: '40', value: cust.name });
     const fPhone = h('input', { type: 'tel', inputmode: 'tel', autocomplete: 'tel', maxlength: '16', dir: 'ltr', value: cust.phone });
     const fAddr = h('textarea', { rows: '2', maxlength: '200', autocomplete: 'street-address', placeholder: t('addressPh') }); fAddr.value = cust.addr;
     const fNote = h('textarea', { rows: '2', maxlength: '200', placeholder: t('notePh') });
+    const fRef = h('input', { type: 'text', inputmode: 'numeric', maxlength: '12', dir: 'ltr', placeholder: 'مثال: 4829 (آخر 4 أرقام من المرجع أو الرقم المحول منه)' });
     [['name', fName], ['phone', fPhone], ['addr', fAddr]].forEach(([k, el]) => el.addEventListener('input', () => { cust[k] = el.value.slice(0, 200); mem.set('cust', cust); el.removeAttribute('aria-invalid'); }));
+    fRef.addEventListener('input', () => fRef.removeAttribute('aria-invalid'));
+
     const fCoupon = h('input', { type: 'text', maxlength: '20', autocomplete: 'off', autocapitalize: 'characters', spellcheck: 'false', dir: 'ltr', value: coupon || '' });
     fCoupon.addEventListener('keydown', e => { if (e.key === 'Enter') applyCoupon(fCoupon.value); });
+
+    // بناء قسم اختيار الدفع (كاش / InstaPay / فودافون كاش) بشكل أصلي ونظيف
+    const payInfoBox = h('div', { class: 'pay-info-box' });
+    const refField = field('🔢 آخر 4 أرقام من الرقم المرجعي للتحويل (أو الرقم المحول منه):', fRef);
+    refField.hidden = true;
+
+    const btnCash = h('div', { class: 'pay-opt active', text: '💵 كاش' });
+    const btnInsta = h('div', { class: 'pay-opt', text: '⚡ InstaPay' });
+    const btnVf = h('div', { class: 'pay-opt', text: '📱 فودافون كاش' });
+    const payBtns = [btnCash, btnInsta, btnVf];
+
+    function selectPay(mode, activeBtn) {
+      payMethod = mode;
+      payBtns.forEach(b => b.classList.remove('active'));
+      activeBtn.classList.add('active');
+      const br = branch() || {};
+      if (mode === 'instapay') {
+        const num = br.instapay || '01555974185';
+        const copyBtn = h('button', { type: 'button', class: 'copy-num-btn', text: 'نسخ الرقم', onclick: () => { navigator.clipboard.writeText(num); copyBtn.textContent = 'تم النسخ ✓'; } });
+        put(payInfoBox,
+          h('div', null, h('strong', { text: '⚡ رقم تحويل InstaPay: ' }), h('span', { dir: 'ltr', text: num }), copyBtn),
+          h('div', { text: '📸 حوّل المبلغ ثم اكتب آخر 4 أرقام من عملية التحويل بالأسفل، وأرفق صورة التحويل (Screenshot) في واتساب بعد الإرسال.' }));
+        payInfoBox.classList.add('show');
+        refField.hidden = false;
+      } else if (mode === 'vf_cash') {
+        const num = br.vodafoneCash || '01013264185';
+        const copyBtn = h('button', { type: 'button', class: 'copy-num-btn', text: 'نسخ الرقم', onclick: () => { navigator.clipboard.writeText(num); copyBtn.textContent = 'تم النسخ ✓'; } });
+        put(payInfoBox,
+          h('div', null, h('strong', { text: '📱 رقم فودافون كاش: ' }), h('span', { dir: 'ltr', text: num }), copyBtn),
+          h('div', { text: '📸 حوّل المبلغ ثم اكتب آخر 4 أرقام من الرقم المحول منه بالأسفل، وأرفق صورة التحويل (Screenshot) في واتساب بعد الإرسال.' }));
+        payInfoBox.classList.add('show');
+        refField.hidden = false;
+      } else {
+        payInfoBox.classList.remove('show');
+        put(payInfoBox);
+        refField.hidden = true;
+      }
+    }
+    btnCash.addEventListener('click', () => selectPay('cash', btnCash));
+    btnInsta.addEventListener('click', () => selectPay('instapay', btnInsta));
+    btnVf.addEventListener('click', () => selectPay('vf_cash', btnVf));
+    payMethod = 'cash';
+
+    const payWrap = h('div', { class: 'pay-methods-wrap' },
+      h('span', { text: `💳 ${t('payMethod')}` }),
+      h('div', { class: 'pay-methods' }, btnCash, btnInsta, btnVf),
+      payInfoBox,
+      refField
+    );
+
     const err = h('p', { class: 'err', role: 'alert' });
     const sendBtn = h('button', { type: 'button', class: 'primary wa', text: `💬 ${t('send')}`, onclick: sendOrder });
     const addrField = field(t('address'), fAddr);
@@ -421,20 +476,20 @@
       h('div', { class: 'field' }, h('span', { text: t('coupon') }), h('div', { class: 'coupon' }, fCoupon, h('button', { type: 'button', text: t('apply'), onclick: () => applyCoupon(fCoupon.value) }))),
       sum,
       field(t('name'), fName), field(t('phone'), fPhone), addrField, field(t('note'), fNote),
+      payWrap,
       isOpen() ? null : h('p', { class: 'notice', text: `🌙 ${t('closedMsg')} ${fmtTime(S.hours.open)}` }),
-      h('p', { class: 'hint', text: `💵 ${t('payCash')} • ${t('confirmNote')}` }));
+      h('p', { class: 'hint', text: t('confirmNote') }));
     dlg.replaceChildren(head, body, h('div', { class: 'sheet-foot col' }, err, sendBtn));
-    R = { lines, sum, zoneSel, addrField, fName, fPhone, fAddr, fNote, fCoupon, err, sendBtn };
-    fillZones(); toggleAddr(); renderLines(); renderSummary();
+    R = { lines, sum, zoneSel, addrField, fName, fPhone, fAddr, fNote, fRef, fCoupon, err, sendBtn };
+    fillZones(); renderLines(); renderSummary();
     sendBtn.disabled = !isOpen();
   }
   function fillZones() {
-    const zones = (branch() && branch().zones) || [];
-    put(R.zoneSel,h('option', { value: '-1', disabled: true, selected: zIdx < 0, text: t('chooseZone') }),
-      zones.map((z, i) => h('option', { value: String(i), selected: i === zIdx, text: z.pickup ? L(z) : `${L(z)} — ${money(z.fee || 0)}` })));
+    const zones = getDeliveryZones();
+    put(R.zoneSel, h('option', { value: '-1', disabled: true, selected: zIdx < 0, text: t('chooseZone') }),
+      zones.map((z, i) => h('option', { value: String(i), selected: i === zIdx, text: `${L(z)} — ${money(z.fee || 0)}` })));
     R.zoneSel.value = String(zIdx);
   }
-  function toggleAddr() { const z = branch() && branch().zones ? branch().zones[zIdx] : null; R.addrField.hidden = !!(z && z.pickup); }
   function renderLines() {
     R.lines.replaceChildren(...cart.map((l, idx) => {
       const it = ITEMS.get(l.id), ss = sizeSet(it), as = addonSet(it);
@@ -463,7 +518,7 @@
       x.c ? row(`${t('discount')} (${x.c.code})`, x.disc ? `− ${money(x.disc)}` : '—', 'disc') : null,
       x.short ? h('p', { class: 'hint', text: `${t('couponMin')} ${money(x.short)}` }) : null,
       row(t('delivery'), !x.zone ? '—' : (x.fee ? money(x.fee) : t('free'))),
-      (S.freeDeliveryOver && x.zone && !x.zone.pickup && x.fee) ? h('p', { class: 'hint', text: `🎁 ${t('freeOver')} ${money(S.freeDeliveryOver)}` }) : null,
+      (S.freeDeliveryOver && x.zone && x.fee) ? h('p', { class: 'hint', text: `🎁 ${t('freeOver')} ${money(S.freeDeliveryOver)}` }) : null,
       row(t('total'), money(x.total), 'tot'));
   }
   function applyCoupon(raw) {
@@ -475,7 +530,7 @@
     renderSummary();
   }
 
-  /* ---------- إرسال الطلب على واتساب ---------- */
+  /* ---------- إرسال الطلب على واتساب (الفاتورة الرسمية المرقمة بدون أي رموز معطوبة) ---------- */
   function fail(el, msg) { R.err.textContent = msg; if (el) { el.setAttribute('aria-invalid', 'true'); el.focus(); } toast(msg, 3000); }
   function sendOrder() {
     if (!R || !cart.length) return;
@@ -484,20 +539,34 @@
     const name = clean(R.fName.value, 40);
     const phone = toLatin(R.fPhone.value).replace(/[^\d+]/g, '').replace(/^\+/, '').replace(/^00/, '').replace(/^20(?=1)/, '0');
     const addr = clean(R.fAddr.value, 200), note = clean(R.fNote.value, 200);
+    const refCode = clean(toLatin(R.fRef.value), 12);
     const x = totals(), z = x.zone;
     if (name.length < 2) return fail(R.fName, t('errName'));
     if (!/^01[0125]\d{8}$/.test(phone)) return fail(R.fPhone, t('errPhone'));
     if (!z) return fail(R.zoneSel, t('errZone'));
-    if (!z.pickup && addr.length < 8) return fail(R.fAddr, t('errAddr'));
-    const wa = String(branch().whatsapp || '').replace(/\D/g, '');
+    if (addr.length < 8) return fail(R.fAddr, t('errAddr'));
+    if (payMethod !== 'cash' && refCode.length < 4) return fail(R.fRef, t('errRef'));
+
+    const wa = String((z.phone || branch().whatsapp) || '').replace(/\D/g, '');
     if (!/^\d{10,15}$/.test(wa)) return fail(null, 'WhatsApp number misconfigured in menu.js');
 
-    // الرسالة دايماً بالعربي عشان المطعم
+    const now = new Date();
+    // توليد رقم فاتورة تسلسلي رقمي واضح ومقروء (الشهر + اليوم + الساعة + الدقيقة + ثانية)
+    const seqOrderNo = '#' + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + '-' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0') + String(now.getSeconds()).slice(-1);
+    const dateStr = now.toLocaleDateString('ar-EG') + ' | ' + now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+    let payText = 'نقدي عند الاستلام (Cash)';
+    if (payMethod === 'instapay') payText = `تحويل InstaPay (مرجع التحويل: ${refCode})`;
+    if (payMethod === 'vf_cash') payText = `محفظة فودافون كاش (مرجع التحويل: ${refCode})`;
+
     const A = T.ar, m = n => `${Math.round(n).toLocaleString('en-US')} ${S.currency.ar}`;
-    const orderNo = 'AFS-' + Date.now().toString(36).slice(-5).toUpperCase();
-    const out = [`🧾 طلب جديد — ${S.name}`, `رقم الطلب: ${orderNo}`];
-    if (branches.length > 1) out.push(`الفرع: ${branch().ar}`);
-    out.push('━━━━━━━━━━━━');
+    const out = [
+      `*فاتورة طلب رسمية — ${S.name}*`,
+      `*رقم الفاتورة:* ${seqOrderNo}`,
+      `*التوقيت:* ${dateStr}`
+    ];
+    if (branches.length > 1) out.push(`*الفرع:* ${branch().ar}`);
+    out.push('━━━━━━━━━━━━━━━━━━━━');
     for (const l of cart) {
       const it = ITEMS.get(l.id), ss = sizeSet(it), as = addonSet(it);
       let s = `• ${l.q} × ${it.ar}`;
@@ -505,12 +574,22 @@
       if (as && l.a.length) s += ` + ${l.a.map(a => as.opts[a].ar).join('، ')}`;
       out.push(`${s} = ${m(lineTotal(l))}`);
     }
-    out.push('━━━━━━━━━━━━', `${A.subtotal}: ${m(x.sub)}`);
-    if (x.disc) out.push(`${A.discount} (${x.c.code}): − ${m(x.disc)}`);
-    out.push(z.pickup ? `🏃 ${z.ar}` : `${A.delivery} (${z.ar}): ${x.fee ? m(x.fee) : A.free}`);
-    out.push(`*${A.total}: ${m(x.total)}*`, `💵 ${A.payCash}`, '━━━━━━━━━━━━', `👤 ${name}`, `📞 ${phone}`);
-    if (!z.pickup) out.push(`📍 ${addr}`);
-    if (note) out.push(`📝 ${note}`);
+    out.push('━━━━━━━━━━━━━━━━━━━━');
+    out.push(`${A.subtotal}: ${m(x.sub)}`);
+    if (x.disc) out.push(`${A.discount} (${x.c.code}): - ${m(x.disc)}`);
+    out.push(`${A.delivery} (${z.ar}): ${x.fee ? m(x.fee) : A.free}`);
+    out.push(`*${A.total} النهائي: ${m(x.total)}*`);
+    out.push(`*طريقة الدفع:* ${payText}`);
+    out.push('━━━━━━━━━━━━━━━━━━━━');
+    out.push(`*العميل:* ${name}`);
+    out.push(`*الموبايل:* ${phone}`);
+    out.push(`*العنوان:* ${addr}`);
+    if (note) out.push(`*ملاحظات:* ${note}`);
+    if (payMethod !== 'cash') {
+      out.push('━━━━━━━━━━━━━━━━━━━━');
+      out.push('*تنبيه:* مرفق أسفل هذه الفاتورة صورة إيصال التحويل (Screenshot) للمطابقة والتأكيد.');
+    }
+
     cust.name = name; cust.phone = phone; cust.addr = addr; mem.set('cust', cust);
     window.location.href = `https://wa.me/${wa}?text=${encodeURIComponent(out.join('\n'))}`;
   }
@@ -540,7 +619,7 @@
   window.addEventListener('appinstalled', () => { installBtn.hidden = true; deferredPrompt = null; });
   if (isIOS && !standalone) installBtn.hidden = false;
   installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) { deferredPrompt.prompt(); try { await deferredPrompt.userChoice; } catch { /* ignore */ } deferredPrompt = null; installBtn.hidden = true; }
+    if (deferredPrompt) { deferredPrompt.prompt(); try { await deferredPrompt.userChoice; } catch {} deferredPrompt = null; installBtn.hidden = true; }
     else if (isIOS) toast(t('iosInstall'), 6000);
   });
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
@@ -550,98 +629,4 @@
   /* ---------- تشغيل ---------- */
   renderAll();
   setInterval(() => { renderHeader(); if (R && R.sendBtn.isConnected) R.sendBtn.disabled = !isOpen(); }, 60000);
-})();
-
-
-
-// ====== UPGRADED PAYMENT & LUXURY WHATSAPP INVOICE ENGINE ======
-(function() {
-  window.selectedPayMethod = 'cash';
-
-  function injectInsideCartDialogOnly() {
-    const cartDlg = document.getElementById('cartDlg');
-    if (!cartDlg || !cartDlg.open) return; // لا يعمل إلا عندما تكون نافذة السلة مفتوحة
-    if (cartDlg.querySelector('#payMethodsBox')) return;
-
-    // البحث عن زر الإرسال الأخضر داخل نافذة السلة حصراً
-    const buttons = cartDlg.querySelectorAll('button');
-    let submitBtn = null;
-    buttons.forEach(b => {
-      if (b.textContent.includes('واتساب') || b.textContent.includes('WhatsApp') || b.classList.contains('cta') || b.type === 'submit') {
-        submitBtn = b;
-      }
-    });
-    if (!submitBtn || !submitBtn.parentNode) return;
-
-    const wrap = document.createElement('div');
-    wrap.id = 'payMethodsBox';
-    wrap.className = 'pay-methods-wrap';
-    wrap.innerHTML = `
-      <div style="font-weight:900;font-size:13px;color:#9a3412;margin-bottom:4px;">💳 طريقة الدفع:</div>
-      <div class="pay-methods">
-        <div class="pay-opt active" data-pay="cash">💵 كاش</div>
-        <div class="pay-opt" data-pay="instapay">⚡ InstaPay</div>
-        <div class="pay-opt" data-pay="vf_cash">📱 فودافون كاش</div>
-      </div>
-      <div id="payTransferInfo" class="pay-info-box"></div>
-    `;
-    submitBtn.parentNode.insertBefore(wrap, submitBtn);
-
-    const opts = wrap.querySelectorAll('.pay-opt');
-    const infoBox = wrap.querySelector('#payTransferInfo');
-    const branch = (window.STORE && window.STORE.branches && window.STORE.branches[0]) || {};
-
-    opts.forEach(btn => {
-      btn.addEventListener('click', () => {
-        opts.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        window.selectedPayMethod = btn.dataset.pay;
-        if (window.selectedPayMethod === 'instapay') {
-          const num = branch.instapay || '01555974185';
-          infoBox.className = 'pay-info-box show';
-          infoBox.innerHTML = `⚡ <strong>حول InstaPay على رقم:</strong> <span dir="ltr" style="font-weight:900;font-size:13.5px;">${num}</span>
-            <button type="button" class="copy-num-btn" onclick="navigator.clipboard.writeText('${num}');this.innerText='تم النسخ ✔️'">نسخ</button>
-            <div style="margin-top:4px;color:#9a3412;font-weight:700;">📸 بعد الضغط على إرسال الطلب، أرسل صورة التحويل (Screenshot) في محادثة الواتساب لتأكيد طلبك.</div>`;
-        } else if (window.selectedPayMethod === 'vf_cash') {
-          const num = branch.vodafoneCash || '01013264185';
-          infoBox.className = 'pay-info-box show';
-          infoBox.innerHTML = `📱 <strong>حول فودافون كاش على رقم:</strong> <span dir="ltr" style="font-weight:900;font-size:13.5px;">${num}</span>
-            <button type="button" class="copy-num-btn" onclick="navigator.clipboard.writeText('${num}');this.innerText='تم النسخ ✔️'">نسخ</button>
-            <div style="margin-top:4px;color:#9a3412;font-weight:700;">📸 بعد الضغط على إرسال الطلب، أرسل صورة التحويل (Screenshot) في محادثة الواتساب لتأكيد طلبك.</div>`;
-        } else {
-          infoBox.className = 'pay-info-box';
-          infoBox.innerHTML = '';
-        }
-      });
-    });
-  }
-
-  setInterval(injectInsideCartDialogOnly, 300);
-
-  // إضافة الرقم التسلسلي وطريقة الدفع في أول فاتورة الواتساب
-  const origOpen = window.open;
-  window.open = function(url, target, features) {
-    try {
-      if (typeof url === 'string' && url.includes('wa.me/')) {
-        const parts = url.split('text=');
-        if (parts.length === 2) {
-          let decoded = decodeURIComponent(parts[1]);
-          const now = new Date();
-          const seqNum = String(now.getDate()).padStart(2,'0') + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0') + String(now.getSeconds()).slice(-1);
-          const dateStr = now.toLocaleDateString('ar-EG') + ' - ' + now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
-
-          let payLabel = '💵 نقدي عند الاستلام (Cash)';
-          if (window.selectedPayMethod === 'instapay') payLabel = '⚡ تحويل InstaPay (مرفق صورة التحويل 📸)';
-          if (window.selectedPayMethod === 'vf_cash') payLabel = '📱 فودافون كاش (مرفق صورة التحويل 📸)';
-
-          const header = `🧾 *فاتورة طلب رسمية | رقم: #${seqNum}*\n📅 *التوقيت:* ${dateStr}\n💳 *الدفع:* ${payLabel}\n━━━━━━━━━━━━━━━━━━━━\n`;
-          const footer = `\n━━━━━━━━━━━━━━━━━━━━\n${window.selectedPayMethod !== 'cash' ? '⚠️ *تنبيه للعميل:* يرجى إرفاق صورة التحويل (Screenshot) تحت هذه الرسالة الآن لتأكيد الطلب فوراً 📸' : '✅ *يرجى الرد لتأكيد استلام الطلب*'}`;
-
-          decoded = header + decoded + footer;
-          url = parts[0] + 'text=' + encodeURIComponent(decoded);
-        }
-      }
-    } catch(e) {}
-    return origOpen.call(window, url, target, features);
-  };
 })();
