@@ -153,8 +153,8 @@ window.STORE = {
     { id: 51, cat: "desserts", ar: "تشيز كيك لوتس", en: "Lotus Cheesecake", dar: "قاعدة بسكويت وصوص لوتس", den: "Biscuit base & Lotus sauce", price: 110 },
     { id: 52, cat: "desserts", ar: "براونيز بالآيس كريم", en: "Brownie & Ice Cream", dar: "براونيز سخنة مع فانيليا", den: "Warm brownie with vanilla", price: 95 },
 
-    { id: 53, cat: "drinks", ar: "بيبسي", en: "Pepsi Can", dar: "", den: "", price: 25 },
-    { id: 54, cat: "drinks", ar: "سفن أب", en: "7UP Can", dar: "", den: "", price: 25 },
+    { id: 53, cat: "drinks", ar: "بيبسي", en: "Pepsi", dar: "", den: "", price: 25 },
+    { id: 54, cat: "drinks", ar: "سفن أب", en: "7UP", dar: "", den: "", price: 25 },
     { id: 55, cat: "drinks", ar: "بيبسي لتر", en: "Pepsi 1L", dar: "", den: "", price: 45 },
     { id: 56, cat: "drinks", ar: "مياه معدنية", en: "Mineral Water", dar: "", den: "", price: 12 },
     { id: 57, cat: "drinks", ar: "ليمون بالنعناع", en: "Lemon Mint", dar: "فريش", den: "Fresh", price: 50 },
