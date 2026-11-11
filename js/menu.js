@@ -22,7 +22,6 @@ window.STORE = {
     instapay: "01555974185",
     vodafoneCash: "01013264185",   // 20 + الرقم من غير أول صفر
       zones: [
-        { ar: "استلام من المطعم", en: "Pickup from store", fee: 0, pickup: true },
         { ar: "منطقة 1 — قريب جداً (حتى 2 كم)", en: "Zone 1 — up to 2 km", fee: 20 },
         { ar: "منطقة 2 — من 2 لـ 4 كم", en: "Zone 2 — 2 to 4 km", fee: 30 },
         { ar: "منطقة 3 — من 4 لـ 6 كم", en: "Zone 3 — 4 to 6 km", fee: 40 },
