@@ -26,7 +26,7 @@
       added: 'اتضاف للسلة ✓', maxAddons: 'وصلت للحد الأقصى من الإضافات', errName: 'اكتب اسمك الثلاثي أو الثنائي',
       errPhone: 'اكتب رقم موبايل مصري صحيح (11 رقم يبدأ بـ 01)', errAddr: 'اكتب العنوان بالتفصيل', errZone: 'اختار منطقة التوصيل أولاً',
       errRef: 'اكتب آخر 4 أرقام من الرقم المرجعي للتحويل أو الرقم المحول منه لتأكيد الدفع',
-      couponOk: 'تم تطبيق الكود ✓', couponBad: 'الكود غير صحيح', couponMin: 'الكود ده للطلبات فوق', freeOver: 'توصيل مجاني فوق',
+      couponOk: 'تم تطبيق الكود ✓', couponBad: 'الكود غير صحيح', couponUsed: '⚠️ استخدمت هذا الكود من قبل (صالح لمرة واحدة فقط)', couponMin: 'الكود ده للطلبات فوق', freeOver: 'توصيل مجاني فوق',
       deliveryFrom: 'التوصيل من', payMethod: 'طريقة الدفع', payCash: 'كاش عند الاستلام', clear: 'تفريغ السلة', clearQ: 'تفريغ السلة بالكامل؟',
       close: 'إغلاق', prev: 'العرض السابق', next: 'العرض التالي', offersLabel: 'العروض', categories: 'أقسام المنيو', orderNow: 'اطلب دلوقتي ←',
       am: 'ص', pm: 'م', confirmNote: 'المطعم هيأكد معاك الطلب والسعر النهائي على واتساب.', increase: 'زيادة', decrease: 'تقليل',
@@ -45,7 +45,7 @@
       added: 'Added to cart ✓', maxAddons: 'Maximum extras reached', errName: 'Please enter your name',
       errPhone: 'Enter a valid Egyptian mobile (11 digits starting with 01)', errAddr: 'Please enter your detailed address', errZone: 'Choose your delivery area',
       errRef: 'Please enter the last 4 digits of transfer reference or sender number',
-      couponOk: 'Code applied ✓', couponBad: 'Invalid code', couponMin: 'This code is for orders above', freeOver: 'Free delivery over',
+      couponOk: 'Code applied ✓', couponBad: 'Invalid code', couponUsed: '⚠️ You already used this promo code (one-time use only)', couponMin: 'This code is for orders above', freeOver: 'Free delivery over',
       deliveryFrom: 'Delivery from', payMethod: 'Payment Method', payCash: 'Cash on delivery', clear: 'Clear cart', clearQ: 'Clear the whole cart?',
       close: 'Close', prev: 'Previous offer', next: 'Next offer', offersLabel: 'Offers', categories: 'Menu categories', orderNow: 'Order now →',
       am: 'AM', pm: 'PM', confirmNote: 'The restaurant will confirm your order and final price on WhatsApp.', increase: 'Increase', decrease: 'Decrease',
@@ -524,9 +524,15 @@
   function applyCoupon(raw) {
     const code = toLatin(raw).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 20);
     if (!code) { coupon = null; renderSummary(); return; }
+    const usedList = mem.get('usedCoupons', []);
     const c = (S.coupons || []).find(x => String(x.code).toUpperCase() === code);
-    if (!c) { coupon = null; R.fCoupon.setAttribute('aria-invalid', 'true'); toast(t('couponBad')); }
-    else { coupon = c.code; R.fCoupon.removeAttribute('aria-invalid'); R.fCoupon.value = c.code; toast(t('couponOk')); }
+    if (!c) {
+      coupon = null; R.fCoupon.setAttribute('aria-invalid', 'true'); toast(t('couponBad'));
+    } else if (usedList.includes(c.code)) {
+      coupon = null; R.fCoupon.setAttribute('aria-invalid', 'true'); R.fCoupon.value = ''; toast(t('couponUsed'), 3500);
+    } else {
+      coupon = c.code; R.fCoupon.removeAttribute('aria-invalid'); R.fCoupon.value = c.code; toast(t('couponOk'));
+    }
     renderSummary();
   }
 
@@ -590,6 +596,11 @@
       out.push('*تنبيه:* مرفق أسفل هذه الفاتورة صورة إيصال التحويل (Screenshot) للمطابقة والتأكيد.');
     }
 
+    if (x.c && x.disc > 0) {
+      const usedList = mem.get('usedCoupons', []);
+      if (!usedList.includes(x.c.code)) { usedList.push(x.c.code); mem.set('usedCoupons', usedList); }
+      coupon = null;
+    }
     cust.name = name; cust.phone = phone; cust.addr = addr; mem.set('cust', cust);
     window.location.href = `https://wa.me/${wa}?text=${encodeURIComponent(out.join('\n'))}`;
   }
